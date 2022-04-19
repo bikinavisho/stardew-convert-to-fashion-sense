@@ -38,12 +38,13 @@ Move the non-colorable files into the `input` directory.
 Go into the code and comment out line 16, and uncomment out line 17.
 
 ### Before
-javascript```
+```
 let hairstyleObject = _.cloneDeep(COLORABLE_HAIR);
 //let hairstyleObject = _.cloneDeep(UNCOLORABLE_HAIR);
 ```
+
 ### After
-javascript```
+```
 //let hairstyleObject = _.cloneDeep(COLORABLE_HAIR);
 let hairstyleObject = _.cloneDeep(UNCOLORABLE_HAIR);
 ```
