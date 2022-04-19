@@ -1,0 +1,17 @@
+{
+  "name": "conversion",
+  "version": "1.0.0",
+  "description": "programattically modify batch of json",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "BikiFae",
+  "license": "ISC",
+  "dependencies": {
+    "edit-json-file": "^1.6.0",
+    "jsonfile": "^6.1.0",
+    "lodash": "^4.17.21"
+  }
+}
