@@ -16,6 +16,7 @@ files for your hairstyles.
 ## Step 2 : Get the code ready
 - Clone the project
 - run `npm install` inside the project directory
+- create two directories inside the project: `input` and `output` 
 - code is ready to run! just a few more steps
 
 ## Step 3 - Sort the hairstyles
