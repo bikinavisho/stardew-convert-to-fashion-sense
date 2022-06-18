@@ -127,3 +127,9 @@ replaces the medium color and the last will replace the lightest color."
 property of all four options.
 6. Test it in game, and if you don't like the color, tweak it and preview it
 quickly via `fs_reload`.
+
+
+## New To Programming? 
+You'll need node.js and npm, instructions found [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm/)
+
+I use Windows Terminal, download found [here](https://apps.microsoft.com/store/detail/9N0DX20HK701?hl=en-us&gl=US)
