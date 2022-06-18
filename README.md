@@ -13,6 +13,11 @@ of rows by counting all the front-facing hairstyles going down. Once you're done
 click "Download frames as a zip", then extract that to get all your individual
 files for your hairstyles.
 
+### Tips & Tricks!
+An easy way to get the number of rows and columns needed is to follow the following formula:
+- take the width of the image, and divide it by 16, that's your number of columns
+- take the height of the image, and divide it by 96, that's your number of rows
+
 ## Step 2 : Get the code ready
 - Clone the project down from GitHub
 - run `npm install` inside the project directory
