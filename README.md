@@ -1,11 +1,33 @@
-# Convert Hairstyles to Fashion Sense mod packs!
+# Project Overview
 
-This code allows you to convert a hairstyles.png into a Fashion Sense modpack!
+This project can be used to programmatically convert the following into Fashion Sense packs: 
+- a hairstyles.png, usually utilized in Content Patcher Packs 
+- shirts from Json Assets
+- hats from Json Assets
 
-It requires a little bit of code know-how, and having npm set up on your computer.
+## Setup
+Useful programs to have: 
+- GIMP, a free open-source image editing software
+- Windows Terminal for running console commands, download found [here](https://apps.microsoft.com/store/detail/9N0DX20HK701?hl=en-us&gl=US)
+
+To run the code, you'll need node.js and npm, instructions found [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm/)
+
+## Setup Instructions
+1. Download node.js
+2. Pull down the code from github
+3. Open the project directory in the terminal (if you have Windows Terminal installed, all you have to do is be inside the directory and right click, then select Open Terminal here)
+4. Run `npm install` inside the project directory
+5. Create two empty folders inside the project directory, one called `input` and one called `output` 
+6. Follow the instructions below, depending on what type of conversion you want to perform. 
+
+-------
+
+## Convert Hairstyles to Fashion Sense mod packs!
+
+Start here if you want to convert a hairstyles.png into a Fashion Sense modpack!
 
 
-## Step 1 : Cut the Sprite Sheet
+### Step 1 : Cut the Sprite Sheet
 Use https://ezgif.com/sprite-cutter/ to cut your `hairstyles.png` into individual
 hairstyle files. Use the Cutting Method of "By number of columns / rows". For a
 typical `hairstyles.png` the number of columns will be eight. You count the number
@@ -13,20 +35,19 @@ of rows by counting all the front-facing hairstyles going down. Once you're done
 click "Download frames as a zip", then extract that to get all your individual
 files for your hairstyles.
 
-## Step 2 : Get the code ready
-- Clone the project down from GitHub
-- run `npm install` inside the project directory
-- create two directories inside the project: `input` and `output`
-- code is ready to run! just a few more steps
+#### Tips & Tricks!
+An easy way to get the number of rows and columns needed is to do the following:
+- take the width of the image, and divide it by 16, that's your number of columns
+- take the height of the image, and divide it by 96, that's your number of rows
 
-## Step 3 - Sort the hairstyles
+### Step 2 - Sort the hairstyles
 Now it's time for this code to shine! Note that this step requires human sorting
 of the files into "colorable" and "non-colorable" hairstyles. Colorable
 hairstyles are usually in grayscale, whereas non-colorable are usually not in
 grayscale. If you don't want to do this, you can just have them all not be
 colorable, which is the code's default.
 
-## Step 4 - Run the code!
+### Step 3 - Run the code!
 First, drag all the colorable files into the `input` directory in this project.
 Then, run
 `npm start -- -- --conversionType=hair --isColorable --authorName=NAMEOFAUTHOR --hairDescriptor=ADJECTIVE`.
@@ -63,18 +84,24 @@ the "Hairs" directory.
 
 You're done!
 
+### Extra Steps 
 
-# Convert Shirts / Hats from Json Assets to Fashion Sense!
+Not only can you sort it by colorable/noncolorable, but you can also sort it by hairstyle descriptors, for example, dragging all of the long colorable hairstyles over at once, then running it with `npm start -- -- --conversionType=hair --isColorable --authorName=NAMEOFAUTHOR --hairDescriptor=Long` which will result in hairstyles with names like `AUTHORNAME's Long Hairstyle 01 (Dyeable)`. 
+
+--------------
+
+
+## Convert Shirts / Hats from Json Assets to Fashion Sense!
 
 New functionality has been added to the project! Now you can convert Json Assets
 clothing and hat packs into Fashion Sense content packs.
 
-## Step 1 - Copy the files over
+### Step 1 - Copy the files over
 Inside the JSON assets package, copy the entire contents of the Hats OR Shirts
 directory inside the JA package over to the `input` directory. This application
 can only handle converting ONLY hats OR shirts at one time.
 
-## Step 2 - Run the Code!
+### Step 2 - Run the Code!
 Run the following command:
 
 for a shirt:
@@ -100,13 +127,13 @@ Note: currently all sleeves default to white, since it's difficult to
 programmatically and accurately determine which color the sleeves *should* be.
 You can manually go in and change this later, file by file, if you so choose.
 
-## Step 3 - Copy the Files over to your Fashion Sense pack!
+### Step 3 - Copy the Files over to your Fashion Sense pack!
 You will find the Fashion Sense shirts inside the `output` directory after
 running the command mentioned above. Go ahead and drag the contents of the
 `output` directory into a directory called `Shirts` in your Fashion Sense pack.
 
 
-## Step 4 (Optional) - Fix the Sleeve Colors
+### Step 4 (Optional) - Fix the Sleeve Colors
 1. Open the shirt.png file in your image editor of choice, one that specifically
 can read RGB values. I personally use GIMP for this, since it's free and
 open-source.
@@ -122,3 +149,5 @@ replaces the medium color and the last will replace the lightest color."
 property of all four options.
 6. Test it in game, and if you don't like the color, tweak it and preview it
 quickly via `fs_reload`.
+
+
