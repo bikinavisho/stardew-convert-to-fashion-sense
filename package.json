@@ -1,22 +1,26 @@
 {
-  "name": "fashion sense conversion",
-  "version": "1.0.0",
-  "description": "programattically modify batch of json",
-  "main": "index.js",
-  "scripts": {
-    "start": "npm run convert",
-    "convert": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier --write input/"
-  },
-  "author": "BikiFae",
-  "license": "ISC",
-  "dependencies": {
-    "command-line-args": "^5.2.1",
-    "jsonfile": "^6.1.0",
-    "lodash": "^4.17.21",
-    "path": "^0.12.7",
-    "prettier": "^2.6.2",
-    "read-json5-file": "^0.0.0"
-  }
+	"name": "fashion sense conversion",
+	"version": "1.0.0",
+	"description": "programattically modify batch of json",
+	"main": "index.js",
+	"engines": {
+		"node": "^16.0.0",
+		"npm": "^8.0.0"
+	},
+	"scripts": {
+		"start": "npm run convert",
+		"convert": "node index.js",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"format": "prettier --write input/"
+	},
+	"author": "BikiFae",
+	"license": "ISC",
+	"dependencies": {
+		"command-line-args": "^5.2.1",
+		"jsonfile": "^6.1.0",
+		"lodash": "^4.17.21",
+		"path": "^0.12.7",
+		"prettier": "^2.6.2",
+		"read-json5-file": "^0.0.0"
+	}
 }
