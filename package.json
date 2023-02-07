@@ -4,8 +4,8 @@
 	"description": "programattically modify batch of json",
 	"main": "index.js",
 	"engines": {
-		"node": "^16.0.0",
-		"npm": "^8.0.0"
+		"node": "^19.0.0",
+		"npm": "^9.0.0"
 	},
 	"scripts": {
 		"start": "npm run convert",
