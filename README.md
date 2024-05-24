@@ -26,31 +26,13 @@ To run the code, you'll need node.js and npm, instructions found [here](https://
 
 Start here if you want to convert a hairstyles.png into a Fashion Sense modpack!
 
+## Step 1 - Copy the hairstyles!
 
-### Step 1 : Cut the Sprite Sheet
-Use https://ezgif.com/sprite-cutter/ to cut your `hairstyles.png` into individual
-hairstyle files. Use the Cutting Method of "By number of columns / rows". For a
-typical `hairstyles.png` the number of columns will be eight. You count the number
-of rows by counting all the front-facing hairstyles going down. Once you're done,
-click "Download frames as a zip", then extract that to get all your individual
-files for your hairstyles.
+Drag the `hairstyles.png` into the `input` directory in this project.
 
-#### Tips & Tricks!
-An easy way to get the number of rows and columns needed is to do the following:
-- take the width of the image, and divide it by 16, that's your number of columns
-- take the height of the image, and divide it by 96, that's your number of rows
+### Step 2 - Run the code!
+Run `npm start -- -- --conversionType=hair --authorName=NAMEOFAUTHOR --hairDescriptor=ADJECTIVE`.
 
-### Step 2 - Sort the hairstyles
-Now it's time for this code to shine! Note that this step requires human sorting
-of the files into "colorable" and "non-colorable" hairstyles. Colorable
-hairstyles are usually in grayscale, whereas non-colorable are usually not in
-grayscale. If you don't want to do this, you can just have them all not be
-colorable, which is the code's default.
-
-### Step 3 - Run the code!
-First, drag all the colorable files into the `input` directory in this project.
-Then, run
-`npm start -- -- --conversionType=hair --isColorable --authorName=NAMEOFAUTHOR --hairDescriptor=ADJECTIVE`.
 There are a few customizable parameters that you can alter accordingly. First,
 you should enter the original name of the author whose hairstyles you are
 converting. This will enter it in Fashion Sense as `AUTHOR's Hairstyle 01`. If
@@ -58,26 +40,7 @@ you specify a `hairDescriptor`, it will add that after the author's name,
 resulting in `AUTHOR's ADJECTIVE Hairstyle 01`, which makes it a lot easier to
 search for hairstyles you want in the Fashion Sense interface later.
 
-For example, if you enter the command `npm start -- -- --conversionType=hair --isColorable --authorName=BikiFae --hairDescriptor=Braided`,
-it will result in hairstyles named as `BikiFae's Braided Hairstyle 01 (Dyeable)`.
-
-After executing the command above with the parameters you want, you will find
-the Fashion Sense converted hairstyles in the `output` directory, with the file
-names corresponding to the tile number that the program from Step 1 gave them.
-
-Move these files to your Fashion Sense pack, to the "Hairs" directory.
-
-Delete the files in the `input` directory.
-Move the non-colorable files into the `input` directory.
-
-Now run
-`npm start -- -- --conversionType=hair --authorName=NAMEOFAUTHOR --hairDescriptor=ADJECTIVE`.,
-and your Fashion Sense converted hairstyles will again be found in the `output`
-directory.
-(If you're wondering why `--isColorable` is no longer there, it's because the
-code defaults to isColorable:false, and adding `--isColorable` changes it to
-true. So when you want it to not be colorable, all you have to do is remove the
-parameter.)
+For example, if you enter the command `npm start -- -- --conversionType=hair  --authorName=BikiFae --hairDescriptor=Braided`, it will result in hairstyles named as `BikiFae's Braided Hairstyle 01 (Dyeable)`.
 
 Move these files from the `output` directory to your Fashion Sense pack, inside
 the "Hairs" directory.
@@ -86,7 +49,7 @@ You're done!
 
 ### Extra Steps 
 
-Not only can you sort it by colorable/noncolorable, but you can also sort it by hairstyle descriptors, for example, dragging all of the long colorable hairstyles over at once, then running it with `npm start -- -- --conversionType=hair --isColorable --authorName=NAMEOFAUTHOR --hairDescriptor=Long` which will result in hairstyles with names like `AUTHORNAME's Long Hairstyle 01 (Dyeable)`. 
+You can also sort it by hairstyle descriptors, for example, dragging all of the long colorable hairstyles over at once, then running it with `npm start -- -- --conversionType=hair --authorName=NAMEOFAUTHOR --hairDescriptor=Long` which will result in hairstyles with names like `AUTHORNAME's Long Hairstyle 01 (Dyeable)`. 
 
 --------------
 
