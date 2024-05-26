@@ -3,8 +3,9 @@ const loadJson5File = require('read-json5-file');
 const _ = require('lodash');
 const jsonFile = require('jsonfile')
 const path = require('path');
+const jimp = require('jimp')
 
-const commandLineArgs = require('command-line-args')
+const commandLineArgs = require('command-line-args');
 const optionDefinitions = [
    { name: 'conversionType', type: String, defaultOption: true, alias: 't' },
    { name: 'authorName', type: String, alias: 'a' },
@@ -21,16 +22,13 @@ console.log('options: ', options);
 // then recreate the output folder
 // then start execution of reading/translating/writing
 fsPromises.rm('./output', {recursive: true}).then(() => {
-  fsPromises.mkdir('./output').then(() => {
+  fsPromises.mkdir('./output').then(async () => {
+    if (await checkFileExistsSync('./input/hairstyles.png')) await autoSplitHairstyles()
     fsPromises.readdir('./input').then((fileNames) => {
-      let numberOfFiles = fileNames.length;
-
-      // this variable only truly applies to the isHair flow
-      let isColorable = false;
-      if (options.isColorable) {
-        isColorable = options.isColorable;
-      }
-
+        let isColorable = false;
+        if (options.isColorable) {
+            isColorable = options.isColorable;
+        }
 
       // toggle the type of conversion you're performing today
       let isHair = false;
@@ -188,41 +186,44 @@ fsPromises.rm('./output', {recursive: true}).then(() => {
           const paddedIndex = _.replace(_.replace(fileName, 'tile', ''), '.png', '');
           fsPromises.mkdir(`./output/${paddedIndex}`).then(() => {
             if (isHair) {
-              let hairstyleObject = _.cloneDeep(isColorable ? COLORABLE_HAIR : UNCOLORABLE_HAIR);
+              isFileGreyScale(`./input/${fileName}`).then((colourable) => {
+                let hairstyleObject = _.cloneDeep(colourable ? COLORABLE_HAIR : UNCOLORABLE_HAIR);
 
-              //NOTE: CHANGE THE BELOW VARIABLES TO MATCH YOUR RUN
-              let authorName = '';
-              let hairDescriptor = 'Long';    // Long, Short, Wavy, etc.
+                //NOTE: CHANGE THE BELOW VARIABLES TO MATCH YOUR RUN
+                let authorName = '';
+                let hairDescriptor = 'Long';    // Long, Short, Wavy, etc.
 
-              if (options.authorName) {
-                authorName = options.authorName;
-              }
-              if (options.hairDescriptor) {
-                hairDescriptor = options.hairDescriptor;
-              }
+                if (options.authorName) {
+                    authorName = options.authorName;
+                }
+                if (options.hairDescriptor) {
+                    hairDescriptor = options.hairDescriptor;
+                }
 
-              // set the object's display name
-              hairstyleObject["Name"] = `${authorName}'s ${hairDescriptor} Hairstyle ${paddedIndex}`;
-              //hairstyleObject["Name"] = `${hairDescriptor} Sakura Hairstyle ${paddedIndex}`;
-              if  (isColorable) {
-                hairstyleObject["Name"] += " (Dyeable)";
-              }
+                // set the object's display name
+                hairstyleObject["Name"] = `${authorName}'s ${hairDescriptor} Hairstyle ${paddedIndex}`;
+                //hairstyleObject["Name"] = `${hairDescriptor} Sakura Hairstyle ${paddedIndex}`;
+                if  (colourable) {
+                    hairstyleObject["Name"] += " (Dyeable)";
+                }
 
-              // write to the json
-              fsPromises.writeFile(`./output/${paddedIndex}/hair.json`, JSON.stringify(hairstyleObject, null, "\t")).then(() => {
-                console.log('hair.json created for ' + paddedIndex);
-              }).catch((e) => {
-                console.log('failed to create hair.json for ' + paddedIndex);
-                console.log(e);
-              });
+                // write to the json
+                fsPromises.writeFile(`./output/${paddedIndex}/hair.json`, JSON.stringify(hairstyleObject, null, "\t")).then(() => {
+                    console.log('hair.json created for ' + paddedIndex);
+                }).catch((e) => {
+                    console.log('failed to create hair.json for ' + paddedIndex);
+                    console.log(e);
+                });
 
-              // copy the image file over
-              fsPromises.copyFile(`./input/${fileName}`, `./output/${paddedIndex}/hair.png`).then(() => {
-                console.log('hair.png copied over for ' + paddedIndex);
-              }).catch((e) => {
-                console.log('failed to copy hair.png for ' + paddedIndex);
-                console.log(e);
-              });
+                // copy the image file over
+                fsPromises.copyFile(`./input/${fileName}`, `./output/${paddedIndex}/hair.png`).then(() => {
+                    console.log('hair.png copied over for ' + paddedIndex);
+                }).catch((e) => {
+                    console.log('failed to copy hair.png for ' + paddedIndex);
+                    console.log(e);
+                });
+              })
+              
             }
           });
         }
@@ -589,3 +590,90 @@ const HAT_TEMPLATE = {
 		}
 	}
 };
+
+/**
+ * 
+ * @param {string} filepath 
+ * @returns {Promise<boolean>}
+ */
+async function isFileGreyScale(filepath) {
+    const sameValues = (cols) => (new Set(cols)).size === 1
+    const image = await jimp.read(filepath)
+
+    let coloured = false
+
+    image.scan(0, 0, image.bitmap.width, image.bitmap.height, function (x, y, idx) {
+        var red = this.bitmap.data[idx + 0];
+        var green = this.bitmap.data[idx + 1];
+        var blue = this.bitmap.data[idx + 2];
+        var alpha = this.bitmap.data[idx + 3];
+
+        const coloursSame = sameValues([red, green, blue])
+        // Check if not same colours (not greyscale) and transparent.
+        if (!coloursSame && alpha != 255) return
+        // Will only run if solid colour and is not greyscale
+        if (!coloursSame) return coloured = true
+        // Do nothing if actually greyscale
+    });
+
+    return !coloured
+}
+
+
+async function isImageBlank(img) {
+    let total = 0;
+    
+    img.scan(0, 0, img.bitmap.width, img.bitmap.height, function (x, y, idx) {
+        var red = this.bitmap.data[idx + 0];
+        var green = this.bitmap.data[idx + 1];
+        var blue = this.bitmap.data[idx + 2];
+        var alpha = this.bitmap.data[idx + 3];
+        
+        total += red + green + blue + alpha
+    });
+
+    return 1 > total
+}
+
+async function autoSplitHairstyles() {
+    const inputFilepath = `./input/hairstyles.png`
+    
+    const inputImage = await jimp.read(inputFilepath)
+
+    const cols = Math.floor(inputImage.bitmap.width / 16)
+    const rows = Math.floor(inputImage.bitmap.height / 96)
+
+    let index = 0;
+
+    for (let rY = 0; rows > rY; rY++) {
+        for (let cX = 0; cols > cX; cX++) {
+            const hair = await jimp.read(inputFilepath)
+            hair.crop(cX * 16, rY * 96, 16, 96)
+            
+            const blank = await isImageBlank(hair)
+            
+            if (!blank) 
+                hair.write(`./input/tile${index.toString().padStart(3, '0')}.png`)
+            
+
+            index++;
+        }
+    }
+    await fsPromises.unlink(inputFilepath)
+}
+
+/**
+ * 
+ * @param {string} filepath 
+ * @returns {Promise<Boolean>}
+ */
+function checkFileExistsSync(filepath){
+    return new Promise((resolve) => {
+        fsPromises.access(filepath, fsPromises.constants.F_OK)
+            .then(() => {
+                resolve(true)
+            }).catch(() => {
+                resolve(false)
+            })
+    })
+}
